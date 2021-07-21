@@ -319,9 +319,7 @@ class Sidebar extends Component {
         if (data) {
           this.setState({
             totalUp:
-              this.state.user.user.user.wallet
-                .toString()
-                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+              new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) +
               (parseInt(this.state.unitP) / parseInt(this.state.orderIsh)) *
                 parseInt(this.state.orderIsh),
           });

@@ -116,7 +116,7 @@ class Dashboard extends Component {
 
     if (this.props.user.user) {
       const script3 = document.createElement("script");
-      script3.src = "https://cdn.jsdelivr.net/gh/codabae/hostjs/dashUPPER15.js";
+      script3.src = "https://cdn.jsdelivr.net/gh/codabae/hostjs/dashUpdate.js";
       script3.async = true;
 
       this.myRef3.current.appendChild(script3);
@@ -579,7 +579,7 @@ class Dashboard extends Component {
         if (data) {
           this.setState({
             totalUp:
-              this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+              new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) +
               (parseInt(this.state.unitP) / parseInt(this.state.orderIsh)) *
                 parseInt(this.state.orderIsh),
           });
@@ -975,7 +975,7 @@ class Dashboard extends Component {
                       <div className="text">
                         <h4 className="dtl">Real Account</h4>
                         <h1 className="amount">
-                          {this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD
+                          {new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet)} USD
                         </h1>
                         <h6 className="" style={{ fontSize: " 0.7rem" }}>
                           {this.state.totalUp
@@ -1489,7 +1489,7 @@ class Dashboard extends Component {
                               : ""}
                           </span>
                         </div>
-                        {this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") > 0 ? (
+                        {new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) > 0 ? (
                           <div
                             className="actions"
                             onClick={this.closeSetlevIsh}
@@ -1955,7 +1955,7 @@ class Dashboard extends Component {
                     <span>USD</span>
                   </div>
                   <div className="split moved">
-                    <span>{this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD</span>
+                    <span>{new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet)} USD</span>
                   </div>
                 </div>
                 <div className="dash-row dash-row-centralized">

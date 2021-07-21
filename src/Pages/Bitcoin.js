@@ -60,12 +60,12 @@ const Bitcoin = (props) => {
     BTCAmount2: parseInt(BTCAmount2),
     BTCAmount3: parseInt(BTCAmount3),
     BTCQRCodeImg: BTCQRCodeImg,
-    img1: img1,
-    img2: img2,
-    img3: img3,
-    imgLink1: imgLink1,
-    imgLink2: imgLink2,
-    imgLink3: imgLink3,
+    depositeImg1: img1,
+    depositeImg2: img2,
+    depositeImg3: img3,
+    depositeImg1Link: imgLink1,
+    depositeImg2Link: imgLink2,
+    depositeImg3Link: imgLink3,
   };
 
   const depositImages = {
@@ -81,16 +81,19 @@ const Bitcoin = (props) => {
 
   const onSaved = async () => {
     setSubmitLoading(true);
-    const imgUpload = await axios.put(
-      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/site/depositImages`,
-      depositImages
-    );
     const res = await axios.put(
       `${endpoint}/api/site/btcAdminSettings`,
       dataAll
     );
 
-    if (res.data && imgUpload) {
+    console.log('hhhh', res,dataAll)
+
+    // const imgUpload = await axios.put(
+    //   `${endpoint}/api/site/depositImages`,
+    //   depositImages
+    // );
+
+    if (res.data) {
       message.success("Settings successfully updated");
       setSubmitLoading(false);
     }
@@ -109,12 +112,12 @@ const Bitcoin = (props) => {
       setBTCAmount2(props.web.web.BTCAmount2);
       setBTCAmount3(props.web.web.BTCAmount3);
       setBTCQRCodeImg(props.web.web.BTCQRCodeImg);
-      setImg1(props.web.web.img1);
-      setImg2(props.web.web.img2);
-      setImg3(props.web.web.img3);
-      setImgLink1(props.web.web.imgLink1);
-      setImgLink2(props.web.web.imgLink2);
-      setImgLink3(props.web.web.imgLink3);
+      setImg1(props.web.web.depositeImg1);
+      setImg2(props.web.web.depositeImg2);
+      setImg3(props.web.web.depositeImg3);
+      setImgLink1(props.web.web.depositeImg1Link);
+      setImgLink2(props.web.web.depositeImg2Link);
+      setImgLink3(props.web.web.depositeImg3Link);
     }
   }, []);
 
@@ -451,7 +454,7 @@ const Bitcoin = (props) => {
                       <button disabled={submitLoading} onClick={onSaved}>
                         {submitLoading ? (
                           <>
-                            Save... <i className="fa fa-spin fa-spinner"></i>
+                            Saving... <i className="fa fa-spin fa-spinner"></i>
                           </>
                         ) : (
                           "Save"

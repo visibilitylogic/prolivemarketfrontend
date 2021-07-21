@@ -65,7 +65,7 @@ class Manager extends Component {
       yourName: "",
       yourEmailAddress: "",
       yourLanguage: "",
-      userCountry: "Nigeria",
+      userCountry: "",
       yourCurrency: "",
       userLevel: "",
       yourWallet: 0,
@@ -86,6 +86,9 @@ class Manager extends Component {
       assets: "",
       scheduledTime: "",
       profitLoss: false,
+      yourPassword: "",
+      yourPasswordComfirm: "",
+      yourPhone: "",
     };
 
     this.myRef3 = this.props.user.user ? React.createRef() : "";
@@ -136,7 +139,9 @@ class Manager extends Component {
   deleteAutoCopyTrade = (id, _userId) => {
     this.setState({ deleteLoading: true });
     axios
-      .delete(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/autocopytrade/${id}`)
+      .delete(
+        `https://prolivemarkets-ykwsl.ondigitalocean.app/api/autocopytrade/${id}`
+      )
       .then(
         (response) => {
           this.callBackAutoTrade(_userId);
@@ -194,13 +199,13 @@ class Manager extends Component {
             );
             let userId = await response.json();
             this.setState({
-              yourWallet: userId.user.user.wallet
-                .toString()
-                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              yourWallet: new Intl.NumberFormat("en-US").format(
+                userId.user.user.wallet
+              ),
               userId: userId.user.user,
-              estimatedBalance: userId.user.user.estimatedBalance
-                .toString()
-                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+              estimatedBalance: new Intl.NumberFormat("en-US").format(
+                userId.user.user.estimatedBalance
+              ),
             });
           })();
         },
@@ -442,20 +447,23 @@ class Manager extends Component {
     // localStorage.setItem("user", JSON.stringify(a));
     // };
 
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/profile/liveTrade`, {
-      method: "PUT",
-      mode: "cors",
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/profile/liveTrade`,
+      {
+        method: "PUT",
+        mode: "cors",
 
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
 
-      body: JSON.stringify({
-        id: this.state.user.user.user._id,
-        liveTrade: this.state.liveTrade,
-      }),
-    })
+        body: JSON.stringify({
+          id: this.state.user.user.user._id,
+          liveTrade: this.state.liveTrade,
+        }),
+      }
+    )
       .then(function (res) {
         if (res.ok) {
           message.success("Live trade updated");
@@ -466,7 +474,41 @@ class Manager extends Component {
       });
   };
 
+  runPass = (id) => {
+    console.log(this.state.yourPassword, "ghhhh");
+    if (this.state.yourPassword !== this.state.yourPasswordComfirm) {
+      message.error("Password must match");
+    } else {
+      fetch(
+        `https://prolivemarkets-ykwsl.ondigitalocean.app/api/profile/update/user`,
+        {
+          mode: "cors",
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id: id,
+            password: this.state.yourPassword,
+            name: this.state.yourName,
+            email: this.state.yourEmailAddress,
+            phoneNumber: this.state.yourPhone,
+          }),
+        }
+      ).then(function (res) {
+        console.log(res);
+        if (res.ok) {
+          console.log("good", res);
+          // message.success("Profile was successfully updated");
+        } else message.error("peoblems updating profile");
+      });
+    }
+  };
+
   editUserProfile = (id) => {
+    this.runPass(id);
+
     fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/profile/update`, {
       mode: "cors",
       method: "PUT",
@@ -486,34 +528,8 @@ class Manager extends Component {
       }),
     }).then(function (res) {
       if (res.ok) {
-        message.success("profile has been updated successfully");
-      } else message.error("profile update failed");
-
-      (async () => {
-        let response = await fetch(
-          `https://prolivemarkets-ykwsl.ondigitalocean.app/api/trade/user/${this.state.user.user.user._id}`
-        );
-        let user = await response.json();
-        this.setState({
-          user: user,
-        });
-        let a = { user: user };
-        localStorage.setItem("user", JSON.stringify(a));
-      })();
-      (async () => {
-        let response = await fetch(
-          `https://prolivemarkets-ykwsl.ondigitalocean.app/api/trade/user/${this.state.userId._id}`
-        );
-        let userId = await response.json();
-        this.setState({
-          yourWallet: userId.user.user.wallet
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
-          estimatedBalance: userId.user.user.estimatedBalance
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
-        });
-      })();
+        message.success("Profile was successfully updated");
+      } else message.error("problems updating profile");
     });
   };
 
@@ -554,18 +570,21 @@ class Manager extends Component {
   };
 
   declineWithrawal = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw/decline`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        message: "Your request to withdraw was declined",
-      }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw/decline`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          message: "Your request to withdraw was declined",
+        }),
+      }
+    ).then(function (res) {
       res.ok
         ? message.success("withdrawal was successfully declined")
         : message.error("withdrawal approval was not declined");
@@ -573,49 +592,55 @@ class Manager extends Component {
   };
 
   approveWithrawal = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw/approve`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        message: "withdrawal was successfully approved",
-      }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw/approve`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          message: "withdrawal was successfully approved",
+        }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("withdrawal was successfully approved");
       } else message.error("withdrawal approval was not successfull");
-      (async () => {
-        let response = await fetch(
-          `https://prolivemarkets-ykwsl.ondigitalocean.app/api/trade/user/${this.state.user.user.user._id}`
-        );
-        let user = await response.json();
-        this.setState({
-          user: user,
-        });
+      // (async () => {
+      //   let response = await fetch(
+      //     `https://prolivemarkets-ykwsl.ondigitalocean.app/api/trade/user/${this.state.user.user.user._id}`
+      //   );
+      //   let user = await response.json();
+      //   this.setState({
+      //     user: user,
+      //   });
 
-        let a = { user: user };
-        localStorage.setItem("user", JSON.stringify(a));
-      })();
+      //   let a = { user: user };
+      //   localStorage.setItem("user", JSON.stringify(a));
+      // })();
     });
   };
 
   declineDeposit = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/deposit/decline`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        message: "deposit request successfully declined",
-      }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/deposit/decline`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          message: "deposit request successfully declined",
+        }),
+      }
+    ).then(function (res) {
       res.ok
         ? message.success("deposit was successfully declined")
         : message.error("deposit approval was not declined");
@@ -623,18 +648,21 @@ class Manager extends Component {
   };
 
   approveDeposit = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/deposit/approve`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        message: "deposit was successfully approved",
-      }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/deposit/approve`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          message: "deposit was successfully approved",
+        }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("deposit was successfully approved");
       } else message.error("deposit approval was not successfull");
@@ -653,15 +681,18 @@ class Manager extends Component {
     });
   };
   makeAdmin = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/makeAdmin`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/makeAdmin`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("successfully made an Admin");
       } else message.error("error making an Admin");
@@ -669,15 +700,18 @@ class Manager extends Component {
   };
 
   makeManager = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/makeManager`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/makeManager`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("successfully made a Manager");
       } else message.error("error making Manager");
@@ -685,15 +719,18 @@ class Manager extends Component {
   };
 
   removeManager = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/removeManager`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/removeManager`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("successfully removed as a Manager");
       } else message.error("error removing Manager");
@@ -701,15 +738,18 @@ class Manager extends Component {
   };
 
   removeAdmin = (id) => {
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/removeAdmin`, {
-      mode: "cors",
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: id }),
-    }).then(function (res) {
+    fetch(
+      `https://prolivemarkets-ykwsl.ondigitalocean.app/api/users/removeAdmin`,
+      {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: id }),
+      }
+    ).then(function (res) {
       if (res.ok) {
         message.success("successfully removed as a Admin");
       } else message.error("error removing as an Admin");
@@ -865,12 +905,12 @@ class Manager extends Component {
         );
         let userId = await response.json();
         this.setState({
-          yourWallet: userId.user.user.wallet
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
-          estimatedBalance: userId.user.user.estimatedBalance
-            .toString()
-            .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ","),
+          yourWallet: new Intl.NumberFormat("en-US").format(
+            userId.user.user.wallet
+          ),
+          estimatedBalance: new Intl.NumberFormat("en-US").format(
+            userId.user.user.estimatedBalance
+          ),
         });
       })();
     }
@@ -1309,12 +1349,9 @@ class Manager extends Component {
                               </td>
                               <td>
                                 {e.amount
-                                  ? e.amount
-                                      .toString()
-                                      .replace(
-                                        /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                        ","
-                                      )
+                                  ? new Intl.NumberFormat("en-US").format(
+                                      e.amount
+                                    )
                                   : ""}{" "}
                                 USD
                               </td>
@@ -1538,13 +1575,12 @@ class Manager extends Component {
                                         userId: user,
                                         displayC: true,
                                         yourEmailAddress: user.email,
+                                        userCountry: user.country,
+                                        yourPhone: user.phoneNumber,
                                         yourName: user.name,
-                                        yourWallet: user.wallet
-                                          .toString()
-                                          .replace(
-                                            /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                            ","
-                                          ),
+                                        yourWallet: new Intl.NumberFormat(
+                                          "en-US"
+                                        ).format(user.wallet),
                                         estimatedBalance: user.estimatedBalance,
                                         yourCurrency: user.currency,
                                         yourLanguage: user.language,
@@ -1717,14 +1753,9 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.yourWallet
-                                              ? this.state.user.user.user.wallet
-                                                  .toString()
-                                                  .replace(
-                                                    /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                                    ","
-                                                  )
-                                              : 0}
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(this.state.userId.wallet)}
                                             {""} USD
                                           </h2>
                                         </div>
@@ -2015,12 +2046,9 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.user.user.user.wallet
-                                              .toString()
-                                              .replace(
-                                                /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                                ","
-                                              )}
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(this.state.userId.wallet)}
                                             {""} USD
                                           </h2>
                                         </div>
@@ -2226,12 +2254,9 @@ class Manager extends Component {
                                           }}
                                         >
                                           $
-                                          {this.state.userId.wallet
-                                            .toString()
-                                            .replace(
-                                              /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                              ","
-                                            )}
+                                          {new Intl.NumberFormat(
+                                            "en-US"
+                                          ).format(this.state.userId.wallet)}
                                         </span>
                                       </h6>
                                       <h6>
@@ -2445,12 +2470,11 @@ class Manager extends Component {
                                     <div>
                                       <h3
                                         style={{ color: "white" }}
-                                      >{`$ ${this.state.estimatedBalance
-                                        .toString()
-                                        .replace(
-                                          /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                          ","
-                                        )}`}</h3>
+                                      >{`$ ${new Intl.NumberFormat(
+                                        "en-US"
+                                      ).format(
+                                        this.state.estimatedBalance
+                                      )}`}</h3>
                                       <p>Estimated balance on</p>
                                       <p>
                                         <Moment format="DD MMMM YYYY">
@@ -2481,12 +2505,9 @@ class Manager extends Component {
                                             <td>{data.assets}</td>
                                             <td>
                                               $
-                                              {data.amount
-                                                .toString()
-                                                .replace(
-                                                  /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                                  ","
-                                                )}
+                                              {new Intl.NumberFormat(
+                                                "en-US"
+                                              ).format(data.amount)}
                                             </td>
                                             <td>
                                               {data.profitLoss
@@ -2589,7 +2610,12 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.yourWallet} USD
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(
+                                              this.state.userId.wallet
+                                            )}{" "}
+                                            USD
                                           </h2>
                                         </div>
                                       </div>
@@ -2778,7 +2804,12 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.yourWallet} USD
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(
+                                              this.state.userId.wallet
+                                            )}{" "}
+                                            USD
                                           </h2>
                                         </div>
                                       </div>
@@ -2881,7 +2912,12 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.yourWallet} USD
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(
+                                              this.state.userId.wallet
+                                            )}{" "}
+                                            USD
                                           </h2>
                                         </div>
                                       </div>
@@ -2984,7 +3020,12 @@ class Manager extends Component {
                                               color: "#29c359",
                                             }}
                                           >
-                                            {this.state.yourWallet} USD
+                                            {new Intl.NumberFormat(
+                                              "en-US"
+                                            ).format(
+                                              this.state.userId.wallet
+                                            )}{" "}
+                                            USD
                                           </h2>
                                         </div>
                                       </div>
@@ -3202,7 +3243,7 @@ class Manager extends Component {
                         <div className="billing-form text-left">
                           <Row>
                             <Col xs={12} md={6}>
-                              <Form.Group controlId="exampleForm.ControlInput1">
+                              <Form.Group>
                                 <Form.Control
                                   type="text"
                                   placeholder="Your Name"
@@ -3216,7 +3257,7 @@ class Manager extends Component {
                               </Form.Group>
                             </Col>
                             <Col xs={12} md={6}>
-                              <Form.Group controlId="exampleForm.ControlInput2">
+                              <Form.Group>
                                 <Form.Control
                                   type="email"
                                   placeholder="Your Email Address"
@@ -3232,7 +3273,7 @@ class Manager extends Component {
                               </Form.Group>
                             </Col>
                           </Row>
-                          <Form.Group controlId="exampleForm.ControlSelect5">
+                          <Form.Group>
                             <Form.Control
                               as="select"
                               value={this.state.userCountry}
@@ -3247,7 +3288,7 @@ class Manager extends Component {
                           </Form.Group>
                           <Row>
                             <Col xs={12} md={6}>
-                              <Form.Group controlId="exampleForm.ControlSelect3">
+                              <Form.Group>
                                 <Form.Control
                                   as="select"
                                   id={"language"}
@@ -3266,7 +3307,7 @@ class Manager extends Component {
                               </Form.Group>
                             </Col>
                             <Col xs={12} md={6}>
-                              <Form.Group controlId="exampleForm.ControlSelect4">
+                              <Form.Group>
                                 <Form.Control
                                   as="select"
                                   defaultValue={this.state.yourCurrency}
@@ -3276,12 +3317,56 @@ class Manager extends Component {
                                     })
                                   }
                                 >
-                                  <option>Select Currency</option>
-                                  <option value="BSD">
-                                    Bahamian Dollars (BSD)
-                                  </option>
-                                  <option value="USD">US Dollars</option>
+                                  <option value="$">Select Currency</option>
+
+                                  <option value="$">USD</option>
+                                  <option value="€">EUR</option>
+                                  <option value="£">GBP</option>
                                 </Form.Control>
+                              </Form.Group>
+                            </Col>
+                          </Row>
+
+                          <Row>
+                            <Col xs={12} md={6}>
+                              <Form.Group>
+                                <Form.Control
+                                  value={this.state.yourPassword}
+                                  onChange={(e) => {
+                                    this.setState({
+                                      yourPassword: e.target.value,
+                                    });
+                                    console.log(
+                                      this.state.yourPassword,
+                                      "lllll"
+                                    );
+                                  }}
+                                  type="password"
+                                  placeholder="Your New Password"
+                                  name="newPassword"
+                                  id="yourPassword"
+                                />
+                              </Form.Group>
+                            </Col>
+
+                            <Col xs={12} md={6}>
+                              <Form.Group>
+                                <Form.Control
+                                  value={this.state.yourPasswordComfirm}
+                                  onChange={(e) => {
+                                    this.setState({
+                                      yourPasswordComfirm: e.target.value,
+                                    });
+                                    console.log(
+                                      this.state.yourPasswordComfirm,
+                                      "lllll"
+                                    );
+                                  }}
+                                  type="password"
+                                  placeholder="Repeat New Password"
+                                  name="repeatPassword"
+                                  id="yourPasswordConfirm"
+                                />
                               </Form.Group>
                             </Col>
                           </Row>

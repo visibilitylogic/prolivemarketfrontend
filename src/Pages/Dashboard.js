@@ -229,32 +229,30 @@ class Dashboard extends Component {
 
     // GET Request.
     fetch(
-      `https://cloud.iexapis.com/stable/fx/latest?symbols=${this.state.fx}&token=${this.token}`
+      `https://financialmodelingprep.com/api/v3/stock/list?apikey=6e39eba411ee51caced6ab2be49f987b`
     )
       // Handle success
       .then((response) => response.json()) // convert to json
       .then((json) => {
-        this.setState({ fxPrice: json });
+        // this.setState({ fxPrice: json });
+        console.log(json,'fx')
       }); //print data to console
 
-    // //crytp
-    // fetch(
-    //   `https://cloud.iexapis.com/stable/crypto/BTCUSD/price?token=${this.token}`
-    // )
-    //   // Handle success
-    //   .then((response) => response.json()) // convert to json
-    //   .then((json) => {
-    //     this.setState({ crypto: [...this.state.crypto, ...[json]] });
-    //     this.setState({ bitP: json });
+    //crytp
+    fetch(
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false`
+    )
+      // Handle success
+      .then((response) => response.json()) // convert to json
+      .then((json) => {
+        this.setState({ crypto: json });
 
-    //     this.setState({
-    //       orderIsh: json.price,
-
-    //       setView: { ...json, tag: "Crypto" },
-    //       setViewM: json.price,
-    //     });
-    //   }); //print data to console
-    // // Catch errors
+        // this.setState({
+        //   setView: { ...json, tag: "Crypto" },
+        //   setViewM: json.price,
+        // });
+      }); //print data to console
+    // Catch errors
 
     // crypto
     //crytp
@@ -442,23 +440,23 @@ class Dashboard extends Component {
         this.setState({ crypto: json });
       }); //print data to console
     // GET Request.
-    fetch(
-      `http://api.currencylayer.com/live?access_key=04c3382363715be1aba4355af44eedc6&format=1`
-    )
-      // Handle success
-      .then((response) => response.json()) // convert to json
-      .then((json) => {
-        let a = [];
-        if (json.quotes !== null && json.quotes !== undefined) {
-          const objectArray = Object.entries(json.quotes);
-          objectArray.forEach(([key, value]) => {
-            a.push({ symbol: key, rate: value, price: value });
+    // fetch(
+    //   `http://api.currencylayer.com/live?access_key=04c3382363715be1aba4355af44eedc6&format=1`
+    // )
+    //   // Handle success
+    //   .then((response) => response.json()) // convert to json
+    //   .then((json) => {
+    //     let a = [];
+    //     if (json.quotes !== null && json.quotes !== undefined) {
+    //       const objectArray = Object.entries(json.quotes);
+    //       objectArray.forEach(([key, value]) => {
+    //         a.push({ symbol: key, rate: value, price: value });
 
-            // console.log(a, "fx");
-          });
-          this.setState({ fxPrice: a });
-        }
-      }); //print data to console
+    //         // console.log(a, "fx");
+    //       });
+    //       this.setState({ fxPrice: a });
+    //     }
+    //   }); //print data to console
 
     //   //crytp
     //   fetch(
@@ -1713,6 +1711,8 @@ class Dashboard extends Component {
                                 autosize
                                 locale="en"
                                 toolbar_bg="#f1f3f6"
+                                style='3'
+                                range='1D'
                                 enable_publishing={false}
                                 hide_side_toolbar={false}
                                 allow_symbol_change={true}

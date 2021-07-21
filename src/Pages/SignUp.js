@@ -12,10 +12,14 @@ import "../AccountsAsset/form.css";
 
 import mastercard from "./../../src/AccountsAsset/images/sponsors/mastercard.svg";
 import visa from "./../../src/AccountsAsset/images/sponsors/visa.svg";
-import firstbank from "./../../src/AccountsAsset/images/sponsors/firstbank.svg";
+import wiretransfer from "./../../src/AccountsAsset/images/sponsors/wire-transfer.png";
 import skrill from "./../../src/AccountsAsset/images/sponsors/skrill.svg";
 import perfect_money from "./../../src/AccountsAsset/images/sponsors/perfect_money.svg";
-import guaranty_trust_bank from "./../../src/AccountsAsset/images/sponsors/guaranty_trust_bank.svg";
+import moneygram from "./../../src/AccountsAsset/images/sponsors/money-gram.png";
+import americanexpress from "./../../src/AccountsAsset/images/sponsors/american-express.jpeg";
+import bitcoin from "./../../src/AccountsAsset/images/sponsors/bitcoin.webp";
+import netteller from "./../../src/AccountsAsset/images/sponsors/netteller.png";
+import webmoney from "./../../src/AccountsAsset/images/sponsors/web_money.png";
 
 export default function SignUp(props) {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -226,24 +230,40 @@ export default function SignUp(props) {
           </section>
           <div class="mt-5">
             <hr />
-            <div class="d-flex flex-wrap align-items-center justify-content-between mx-5 px-5 mb-4 pt-4">
-              <div>
-                <img src={mastercard} alt="mastercard" />
+            <div class="sponsor d-flex align-items-center justify-content-between mx-5 px-5 mb-4 pt-4">
+              <div className="d-flex align-items-center justify-content-between w-100">
+                <div>
+                  <img src={mastercard} className="img-fluid" alt="mastercard" />
+                </div>
+                <div>
+                  <img src={visa} className="img-fluid" alt="visa card" />
+                </div>
+                <div>
+                  <img src={moneygram} className="img-fluid" alt="Money Gram" />
+                </div>
+                <div>
+                  <img src={skrill} className="img-fluid" alt="Skrill" />
+                </div>
+                <div>
+                  <img src={americanexpress} className="img-fluid" alt="American express" />
+                </div>
               </div>
-              <div>
-                <img src={visa} alt="visa card" />
-              </div>
-              <div>
-                <img src={firstbank} alt="First Bank" />
-              </div>
-              <div>
-                <img src={skrill} alt="skrill" />
-              </div>
-              <div>
-                <img src={perfect_money} alt="Perfect Money" />
-              </div>
-              <div>
-                <img src={guaranty_trust_bank} alt="GTB" />
+              <div className="d-flex align-items-center justify-content-between w-100">
+                <div>
+                  <img src={perfect_money} className="img-fluid" alt="Perfect Money" />
+                </div>
+                <div>
+                  <img src={wiretransfer} className="img-fluid" alt="Wire Transfer" />
+                </div>
+                <div>
+                  <img src={bitcoin} className="img-fluid" alt="Bitcoing" />
+                </div>
+                <div>
+                  <img src={netteller} className="img-fluid" alt="Netteller" />
+                </div>
+                <div>
+                  <img src={webmoney} className="img-fluid" alt="Web money" />
+                </div>
               </div>
             </div>
           </div>

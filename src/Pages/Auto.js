@@ -618,9 +618,7 @@ class Auto extends Component {
         if (data) {
           this.setState({
             totalUp:
-              this.state.user.user.user.wallet
-                .toString()
-                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+              new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) +
               (parseInt(this.state.unitP) / parseInt(this.state.orderIsh)) *
                 parseInt(this.state.orderIsh),
           });
@@ -882,9 +880,7 @@ class Auto extends Component {
                           <p>Profit % = {data.profitPercentage}%</p>
                           <p>
                             Subscription Fee: $
-                            {data.subscriptionFee
-                              .toString()
-                              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                            {new Intl.NumberFormat('en-US').format(data.subscriptionFee)}
                           </p>
                           <div className="text-center mt-3">
                             {idArray.includes(data._id) ? (
@@ -931,9 +927,7 @@ class Auto extends Component {
                           </p>
                           <p className="text-white">
                             Subscription = $
-                            {this.state.singleTrade.subscriptionFee
-                              .toString()
-                              .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")}
+                            {new Intl.NumberFormat('en-US').format(this.state.singleTrade.subscriptionFee)}
                           </p>
                           <Form>
                             <Form.Check

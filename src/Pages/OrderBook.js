@@ -532,9 +532,7 @@ class OrderBook extends Component {
         if (data) {
           this.setState({
             totalUp:
-              this.state.user.user.user.wallet
-                .toString()
-                .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+              new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) +
               (parseInt(this.state.unitP) / parseInt(this.state.orderIsh)) *
                 parseInt(this.state.orderIsh),
           });
@@ -850,12 +848,7 @@ class OrderBook extends Component {
                                   }
                                 >
                                   {item.stockAmount
-                                    ? item.stockAmount
-                                        .toString()
-                                        .replace(
-                                          /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                          ","
-                                        )
+                                    ? new Intl.NumberFormat('en-US').format(item.stockAmount)
                                         .slice(0, 8)
                                     : ""}
                                 </p>
@@ -918,12 +911,7 @@ class OrderBook extends Component {
                                 }}
                               >
                                 {item.amount
-                                  ? item.amount
-                                      .toString()
-                                      .replace(
-                                        /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                        ","
-                                      )
+                                  ? new Intl.NumberFormat('en-US').format(item.amount)
                                       .slice(0, 8)
                                   : ""}
                               </p>{" "}
@@ -979,12 +967,7 @@ class OrderBook extends Component {
                                 }}
                               >
                                 {item.amount
-                                  ? item.amount
-                                      .toString()
-                                      .replace(
-                                        /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g,
-                                        ","
-                                      )
+                                  ? new Intl.NumberFormat('en-US').format(item.amount)
                                       .slice(0, 8)
                                   : ""}
                               </p>{" "}

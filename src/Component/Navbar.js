@@ -551,7 +551,7 @@ class Navbar extends Component {
         if (data) {
           this.setState({
             totalUp:
-              this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") +
+              new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet) +
               (parseInt(this.state.unitP) / parseInt(this.state.orderIsh)) *
                 parseInt(this.state.orderIsh),
           });
@@ -832,7 +832,7 @@ class Navbar extends Component {
                       <div className="text">
                         <h4 className="dtl">Real Account</h4>
                         <h1 className="amount">
-                          {this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD
+                          {new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet)} USD
                         </h1>
                         <h6 className="" style={{ fontSize: " 0.7rem" }}>
                           {this.state.totalUp
@@ -928,7 +928,7 @@ class Navbar extends Component {
                     <span>USD</span>
                   </div>
                   <div className="split moved">
-                    <span>{this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD</span>
+                    <span>{new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet)} USD</span>
                   </div>
                 </div>
                 <div className="dash-row dash-row-centralized">
@@ -1050,7 +1050,7 @@ class Navbar extends Component {
                   <div className="details">
                     <span className="name">Real account</span>
                     <span className="amount">
-                      {this.state.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD
+                      {new Intl.NumberFormat('en-US').format(this.state.user.user.user.wallet)} USD
                     </span>
                   </div>
                   <div className="btn">

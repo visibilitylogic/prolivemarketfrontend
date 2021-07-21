@@ -7742,3 +7742,17 @@ label.custom-control-label {
     margin-top: 30%;
   }
 }
+
+
+.error {
+    color: red;
+    position: relative !important;
+    margin-top: 1% !important;
+    text-align: center;
+}
+
+.noWrap-2KhwsEwE .series-2KhwsEwE .valuesAdditionalWrapper-2KhwsEwE {
+  display: block;
+  align-self: auto;
+  font-size: 2.2rem !important
+}

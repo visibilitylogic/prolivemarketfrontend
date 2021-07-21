@@ -6,17 +6,22 @@ import "./Footer.css";
 export default function Footer() {
   const [privacyPolicyLink, setprivacyPolicyLink] = useState("");
   const [termsOfServicesLink, settermsOfServicesLink] = useState("");
+  const [Title, setTitle] = useState("");
+
   useEffect(() => {
     axios.get("https://prolivemarkets-ykwsl.ondigitalocean.app/api/site").then(
       (res) => {
         settermsOfServicesLink(res.data.termsOfServicesLink);
         setprivacyPolicyLink(res.data.privacyPolicyLink);
+        setTitle(res.data.siteTitle);
+
       },
       (error) => {
         console.log(error);
       }
     );
   });
+  
   return (
     <>
       <div className="my-5 pb-2"><hr/></div>
@@ -61,7 +66,7 @@ export default function Footer() {
             </a>
           </div>
           <div>
-            <p class="mb-0">Tradeweb&nbsp; &copy; Copyright 2021 &nbsp;</p>
+            <p class="mb-0">{Title}&nbsp; &copy; Copyright 2021 &nbsp;</p>
           </div>
         </div>
       </div>

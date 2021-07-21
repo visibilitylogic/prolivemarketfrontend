@@ -23,7 +23,7 @@ class Account extends Component {
                 <span>USD</span>
               </div>
               <div className="split moved">
-                <span>{this.props.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD</span>
+                <span>{new Intl.NumberFormat('en-US').format(this.props.user.user.user.wallet)} USD</span>
               </div>
             </div>
             <div className="dash-row dash-row-centralized">
@@ -140,7 +140,7 @@ class Account extends Component {
               </div>
               <div className="details">
                 <span className="name">Real account</span>
-                <span className="amount">{this.props.user.user.user.wallet.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")} USD</span>
+                <span className="amount">{new Intl.NumberFormat('en-US').format(this.props.user.user.user.wallet)} USD</span>
               </div>
               <div className="btn">
                 <a className="withdraw" href="#">

@@ -10,6 +10,7 @@
     "axios": "^0.21.1",
     "express": "^4.17.1",
     "express-favicon": "^2.0.1",
+    "lightweight-charts": "^3.3.0",
     "moment-timezone": "^0.5.33",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.1",
@@ -47,7 +48,7 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all" 
+      "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",
