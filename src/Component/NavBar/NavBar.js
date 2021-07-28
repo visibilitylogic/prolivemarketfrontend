@@ -2445,6 +2445,7 @@ function NavBar(props) {
                         width: "60em",
                         border: "none",
                         padding: ".5em",
+                        color:'black'
                       }}
                       type="number"
                       min={siteUData.minWithdrawalAmount}

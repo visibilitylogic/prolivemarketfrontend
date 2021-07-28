@@ -343,9 +343,9 @@ class Manager extends Component {
   updateAmount = () => {
     // console.log(this.state.credit);
 
-    let walletBal = this.state.user.user.user.wallet;
-
-    if (!this.state.credit && this.state.amount >= walletBal) {
+    let walletBal = this.state.userId.wallet;
+console.log(walletBal,this.state.amount , 'isss')
+    if (!this.state.credit && parseInt(this.state.amount) > walletBal) {
       message.error(
         "This transaction is not valid as it will result in a negative balance"
       );
@@ -375,6 +375,8 @@ class Manager extends Component {
         .then((data) => {
           this.setState({ text: "Save" });
           message.success("Balance updated");
+          window.location.reload();
+
         });
     }
 

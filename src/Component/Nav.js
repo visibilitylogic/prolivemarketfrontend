@@ -490,41 +490,41 @@ function NavbarC(props) {
   const amount = withValue - percent;
 
   const subWithdraw = () => {
-    if (withValue > props.user.user.user.wallet){
-      message.error("Insufficient withdrawal Amount")
-    }else{
-    let withdraw = {
-      id: userID,
-      currency: cardCurrency,
-      fees: percent,
-      method: wMethod,
-      amount: amount,
-      currency: yourCountry,
-      methodDetails: methodDetails,
-    };
+    if (withValue > props.user.user.user.wallet) {
+      message.error("Insufficient withdrawal Amount");
+    } else {
+      let withdraw = {
+        id: userID,
+        currency: cardCurrency,
+        fees: percent,
+        method: wMethod,
+        amount: amount,
+        currency: yourCountry,
+        methodDetails: methodDetails,
+      };
 
-    fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw`, {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(withdraw),
-    })
-      .then(function (res) {
-        if (res.ok) {
-          message.success("Your withdrawal request was successful");
-          setWithdraw(false);
-        } else message.error("Your withdrawal request was not successful, try again");
+      fetch(`https://prolivemarkets-ykwsl.ondigitalocean.app/api/withdraw`, {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(withdraw),
       })
-      .then((data) => {
-        if (data) {
-          console.log("good", data);
-        } else {
-          console.log("bad", data);
-        }
-      });
+        .then(function (res) {
+          if (res.ok) {
+            message.success("Your withdrawal request was successful");
+            setWithdraw(false);
+          } else message.error("Your withdrawal request was not successful, try again");
+        })
+        .then((data) => {
+          if (data) {
+            console.log("good", data);
+          } else {
+            console.log("bad", data);
+          }
+        });
     }
   };
   const BuyCoin = () => {
@@ -2182,10 +2182,11 @@ function NavbarC(props) {
                         width: "60em",
                         border: "none",
                         padding: ".5em",
+                        color: "black",
                       }}
                       type="number"
                       min={siteUData.minWithdrawalAmount}
-                      max={siteUData.maxWithdrawalAmount }
+                      max={siteUData.maxWithdrawalAmount}
                       value={withValue}
                       name="amtWithdraw"
                       onChange={(e) => setWitValue(e.target.value)}
